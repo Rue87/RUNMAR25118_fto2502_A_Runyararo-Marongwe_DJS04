@@ -24,6 +24,9 @@ export default function App() {
 
   // Current page number (for pagination)
   const [currentPage, setCurrentPage] = useState(1);
+  
+  const [sortOrder, setSortOrder] = useState('Newest First'); 
+
 
   // Number of podcasts to show per page
   const itemsPerPage = 12;
@@ -42,9 +45,20 @@ console.log("Genres:", genres);
 
 
 // Filter podcasts based on search term (case-insensitive)
-const filteredPodcasts = podcasts.filter((podcast) =>
+const filteredPodcasts = podcasts
+  .filter((podcast) =>
     podcast.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
+  // Then, sort the filtered podcasts by their last updated date
+  .sort((a, b) => {
+    const dateA = new Date(a.updated);// Convert podcast A's updated value into a real Date
+    const dateB = new Date(b.updated);// Convert podcast B's updated value into a real Date
+ 
+    // If the sort order is "Newest First", sort so that the most recent date comes first
+    return sortOrder === 'Newest First' 
+      ? dateB - dateA  // Newer first
+      : dateA - dateB; // fallback: oldest first
+  });
 
    // Work out which podcasts to show on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -116,7 +130,7 @@ return (
             )}
           </main>
         </>
-      )};
-
+      );
+    }
 
 

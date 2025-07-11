@@ -34,6 +34,7 @@ export default function Header({ searchTerm, setSearchTerm }) {
             type="text"
             placeholder="Search shows..."
             value={searchTerm}
+            //This instantly filters the podcast list, so users see results live.
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
           />
