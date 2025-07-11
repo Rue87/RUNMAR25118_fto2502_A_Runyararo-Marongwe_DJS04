@@ -16,14 +16,27 @@ export default function App() {
   const [podcasts, setPodcasts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+// a state variable to track the user's search input.
+// 'searchTerm' holds the current text typed in the search box.
+// 'setSearchTerm' is the function used to update that text.
+// Initially, searchTerm is an empty string ('').
+  const [searchTerm, setSearchTerm] = useState('');
+
 
   useEffect(() => {
     fetchPodcasts(setPodcasts, setError, setLoading);
   }, []);
+console.log("Podcasts:", podcasts);
+console.log("Genres:", genres);
+
+// Filter podcasts based on search term (case-insensitive)
+const filteredPodcasts = podcasts.filter((podcast) =>
+    podcast.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
-      <Header />
+        <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <main>
         {loading && (
           <div className="message-container">
@@ -41,7 +54,7 @@ export default function App() {
         )}
 
         {!loading && !error && (
-          <PodcastGrid podcasts={podcasts} genres={genres} />
+          <PodcastGrid podcasts={filteredPodcasts} genres={genres} />
         )}
       </main>
     </>

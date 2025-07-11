@@ -1,5 +1,6 @@
 import PodcastCard from "./PodcastCard";
-
+import React, { useState } from 'react';
+import FilterSection from './FilterSection'; // import FilterSection component
 /**
  * Displays a grid layout of podcast preview cards. Each card includes
  * podcast details such as title, image, genres, season count, and updated date.
@@ -12,11 +13,25 @@ import PodcastCard from "./PodcastCard";
  *
  */
 export default function PodcastGrid({ podcasts, genres }) {
+
+   <section>
+      <p>PodcastGrid is rendering ✅</p>
+    </section>
   return (
+
+    <section>
+       {/* Render the filter dropdowns, passing dynamic options */}
+    <FilterSection
+     genreOptions={genres.map(g => g.title)} 
+     sortOptions={['Newest First', 'Oldest First']} 
+     />
+     
+      {/* Render podcast cards grid */}
     <div className="grid">
       {podcasts.map((podcast) => (
         <PodcastCard key={podcast.id} podcast={podcast} genres={genres} />
       ))}
     </div>
+</section>
   );
 }

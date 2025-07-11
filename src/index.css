@@ -15,6 +15,14 @@ body {
   background: white;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
+
+.search-input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 200px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
 .search-icon {
   width: 24px;        /* Change this value as needed */
   height: 24px;
@@ -27,7 +35,43 @@ body {
   border-radius: 50%;
   object-fit: cover;
 }
+/* Container for the entire filter row */
+.filter-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* space between label and dropdowns */
+  margin: 1.5rem 0;
+  font-size: 1rem;
+  padding-left: 0.75rem;
+  padding-right: 1.5rem;
+  overflow-x: auto; 
 
+}
+
+/* Bold label */
+.filter-label {
+  font-weight: bold;
+  margin-right: 0.5rem;
+  font-weight: bold;
+  white-space: nowrap;
+  margin-left: 30px;
+}
+
+
+/* Dropdown styling */
+.filter-dropdown {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  min-width: 150px;
+  max-width: 200px;
+
+ /* KEEP the default browser dropdown arrow */
+  appearance: auto;
+}
 .grid {
   display: grid;
   gap: 1rem;
