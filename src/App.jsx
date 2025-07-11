@@ -3,7 +3,7 @@ import PodcastGrid from "./components/PodcastGrid";
 import { genres } from "./data";
 import { fetchPodcasts } from "./api/fetchPodcasts";
 import Header from "./components/Header";
-
+import FilterSection from "./components/FilterSection";
 /**
  * App - The root component of the Podcast Explorer application. It handles:
  * - Fetching podcast data from a remote API
@@ -25,7 +25,14 @@ export default function App() {
   // Current page number (for pagination)
   const [currentPage, setCurrentPage] = useState(1);
   
-  const [sortOrder, setSortOrder] = useState('Newest First'); 
+  const [sortOrder, setSortOrder] = useState('Newest First');
+
+  // Track the selected genre for filtering 
+  const [selectedGenre, setSelectedGenre] = useState('');
+
+  // Extract just the genre titles from the genres array
+  const genreTitles = genres.map((g) => g.title);
+
 
 
   // Number of podcasts to show per page
@@ -49,17 +56,30 @@ const filteredPodcasts = podcasts
   .filter((podcast) =>
     podcast.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
-  // Then, sort the filtered podcasts by their last updated date
+   //Then filter by the selected genre if one is chosen
+   .filter((podcast) =>
+    selectedGenre ? podcast.genres.includes(selectedGenre) : true
+  )
+  // Then, sort podcasts by date (newest/oldest) or title (A-Z / Z-A) based on user-selected sortOrder
   .sort((a, b) => {
-    const dateA = new Date(a.updated);// Convert podcast A's updated value into a real Date
-    const dateB = new Date(b.updated);// Convert podcast B's updated value into a real Date
- 
-    // If the sort order is "Newest First", sort so that the most recent date comes first
-    return sortOrder === 'Newest First' 
-      ? dateB - dateA  // Newer first
-      : dateA - dateB; // fallback: oldest first
+    //If the user selects "Newest First", sort by date from newest to oldest
+    if (sortOrder === 'Recently Updated') {
+      return new Date(b.updated) - new Date(a.updated);//recent first
+    } 
+    //If the user selects "Oldest First", sort by date from oldest to newest
+    else if (sortOrder === 'Oldest First') {
+      return new Date(a.updated) - new Date(b.updated); //oldest first
+    }
+    //If the user selects "A-Z", sort podcast titles in ascending alphabetical order
+    else if (sortOrder === 'A-Z') {
+      return a.title.localeCompare(b.title);
+    } 
+    //If the user selects "Z-A", sort podcast titles in descending alphabetical order
+    else if (sortOrder === 'Z-A') {
+      return b.title.localeCompare(a.title);
+    }
+    return 0; // fallback: no sort
   });
-
    // Work out which podcasts to show on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -103,6 +123,16 @@ return (
  {/* Render filtered & paginated podcasts */}
         {!loading && !error && (
           <>
+          <FilterSection
+          genreOptions={genreTitles} // list of genres for dropdown
+          sortOptions={['Recently Updated', 'Oldest First', 'A-Z', 'Z-A']} //sorting options
+          selectedGenre={selectedGenre} // currently selected genre
+          setSelectedGenre={setSelectedGenre} // function to update selected genre
+          sortOrder={sortOrder} // current sort selection
+          setSortOrder={setSortOrder} // function to change sort selection
+          />
+
+           {/* Show podcasts based on filter/sort/pagination */}
             <PodcastGrid podcasts={currentPodcasts} genres={genres} />
 
           {/* Pagination Controls*/}
