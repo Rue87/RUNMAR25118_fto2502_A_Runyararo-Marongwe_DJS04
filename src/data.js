@@ -1,5 +1,3 @@
-// Please note that this file contains only the genre data. All other podcast information required for this challenge can be accessed via the API at: https://podcast-api.netlify.app/
-
 export const genres = [
   {
     id: 1,

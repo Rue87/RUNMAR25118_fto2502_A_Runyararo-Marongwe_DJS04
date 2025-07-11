@@ -20,6 +20,11 @@ export default function FilterSection({
   sortOrder,
   setSortOrder,
 }) {
+
+const handleGenreChange = (e) => {
+console.log("Genre selected:", e.target.value);
+  setSelectedGenre(e.target.value);
+};
   return (
     <section className="filter-section">
       {/* Static label shown above the dropdowns */}
@@ -31,16 +36,23 @@ export default function FilterSection({
       <select
         className="filter-dropdown"
         value={selectedGenre}
-        onChange={(e) => setSelectedGenre(e.target.value)}
+        onChange= {handleGenreChange} //{(e) =>setSelectedGenre(e.target.value)}
       >
         {/* Default option to show all genres */}
         <option value="">All Genres</option>
 
         {/* Loop through genreOptions array to create a dropdown option for each genre */}
-        {genreOptions.map((genre, index) => (
-          <option key={index} value={genre}>
-            {genre}
+        {genreOptions.map((genre) => (
+          //<option key={index} value={genre}>
+           // {genre}
+         // </option>
+         // Create a dropdown option for each genre, using the genre ID as the value (for filtering) 
+          // and the genre title as the label shown to the user
+
+         <option key={genre.id} value={genre.id}>
+          {genre.title}
           </option>
+
         ))}
       </select>
 

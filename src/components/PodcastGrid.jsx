@@ -15,7 +15,7 @@ import React, { useState } from 'react';
 export default function PodcastGrid({ podcasts, genres }) {
 
    <section>
-      <p>PodcastGrid is rendering ✅</p>
+      <p>PodcastGrid is rendering </p>
     </section>
   return (
 

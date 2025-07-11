@@ -31,13 +31,11 @@ export default function App() {
   const [selectedGenre, setSelectedGenre] = useState('');
 
   // Extract just the genre titles from the genres array
-  const genreTitles = genres.map((g) => g.title);
-
-
+  //const genreTitles = genres.map((g) => g.title);
+  const genreOptions = genres; // Keep full genre objects with id and title
 
   // Number of podcasts to show per page
   const itemsPerPage = 12;
-
 
   useEffect(() => {
     fetchPodcasts(setPodcasts, setError, setLoading);
@@ -50,16 +48,21 @@ console.log("Genres:", genres);
     setCurrentPage(1);
   }, [searchTerm]);
 
+  console.log("Selected Genre:", selectedGenre);
+  console.log("All Podcast Genres:", podcasts.map(p => p.genres));
 
 // Filter podcasts based on search term (case-insensitive)
 const filteredPodcasts = podcasts
   .filter((podcast) =>
     podcast.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
-   //Then filter by the selected genre if one is chosen
+   
+   // Filter podcasts by genre ID (coerce selectedGenre string to number)
+
    .filter((podcast) =>
-    selectedGenre ? podcast.genres.includes(selectedGenre) : true
+    selectedGenre ? podcast.genres.includes(Number(selectedGenre)) : true
   )
+   
   // Then, sort podcasts by date (newest/oldest) or title (A-Z / Z-A) based on user-selected sortOrder
   .sort((a, b) => {
     //If the user selects "Newest First", sort by date from newest to oldest
@@ -124,7 +127,8 @@ return (
         {!loading && !error && (
           <>
           <FilterSection
-          genreOptions={genreTitles} // list of genres for dropdown
+          //genreOptions={genreTitles} // list of genres for dropdown
+          genreOptions={genreOptions}
           sortOptions={['Recently Updated', 'Oldest First', 'A-Z', 'Z-A']} //sorting options
           selectedGenre={selectedGenre} // currently selected genre
           setSelectedGenre={setSelectedGenre} // function to update selected genre
