@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import PodcastGrid from "./components/PodcastGrid";
 import { genres } from "./data";
-import { fetchPodcasts } from "./api/fetchPodcasts";
+//import { fetchPodcasts } from "./api/fetchPodcasts";
 import Header from "./components/Header";
 import FilterSection from "./components/FilterSection";
+
+import { usePodcastContext } from "./context/PodcastContext";
+import { useFilteredPodcasts } from "./hooks/useFilteredPodcasts";
 /**
  * App - The root component of the Podcast Explorer application. It handles:
  * - Fetching podcast data from a remote API
@@ -13,22 +16,22 @@ import FilterSection from "./components/FilterSection";
  * @returns {JSX.Element} The rendered application interface
  */
 export default function App() {
-  const [podcasts, setPodcasts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+ // const [podcasts, setPodcasts] = useState([]);
+  //const [loading, setLoading] = useState(true);
+  //const [error, setError] = useState(null);
 // a state variable to track the user's search input.
 // 'searchTerm' holds the current text typed in the search box.
 // 'setSearchTerm' is the function used to update that text.
 // Initially, searchTerm is an empty string ('').
-  const [searchTerm, setSearchTerm] = useState('');
+  //const [searchTerm, setSearchTerm] = useState('');
 
   // Current page number (for pagination)
   const [currentPage, setCurrentPage] = useState(1);
   
-  const [sortOrder, setSortOrder] = useState('Newest First');
+  //const [sortOrder, setSortOrder] = useState('Newest First');
 
   // Track the selected genre for filtering 
-  const [selectedGenre, setSelectedGenre] = useState('');
+  //const [selectedGenre, setSelectedGenre] = useState('');
   // Toggle between pagination or "Load More" mode
 const [useLoadMore, setUseLoadMore] = useState(false);
 const [visibleCount, setVisibleCount] = useState(12);
@@ -41,11 +44,27 @@ const [visibleCount, setVisibleCount] = useState(12);
   // Number of podcasts to show per page
   const itemsPerPage = 12;
 
-  useEffect(() => {
-    fetchPodcasts(setPodcasts, setError, setLoading);
-  }, []);
-console.log("Podcasts:", podcasts);
+  //useEffect(() => {
+ //   fetchPodcasts(setPodcasts, setError, setLoading);
+ // }, []);
+  const {
+    searchTerm,
+    setSearchTerm,
+    selectedGenre,
+    setSelectedGenre,
+    sortOrder,
+    setSortOrder,
+    loading,
+    error
+  } = usePodcastContext();
+
+  // Filtered podcast list from hook
+  const filteredPodcasts = useFilteredPodcasts();
+  console.log("Filtered Podcasts:", filteredPodcasts);
+
+//console.log("Podcasts:", podcasts);
 console.log("Genres:", genres);
+
 
    // Go back to page 1 whenever the search text changes
   useEffect(() => {
@@ -53,41 +72,9 @@ console.log("Genres:", genres);
       setCurrentPage(1);
   }, [searchTerm, selectedGenre, sortOrder]);
 
-  console.log("Selected Genre:", selectedGenre);
-  console.log("All Podcast Genres:", podcasts.map(p => p.genres));
+  //console.log("Selected Genre:", selectedGenre);
+  //console.log("All Podcast Genres:", podcasts.map(p => p.genres));
 
-// Filter podcasts based on search term (case-insensitive)
-const filteredPodcasts = podcasts
-  .filter((podcast) =>
-    podcast.title.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-   
-   // Filter podcasts by genre ID (coerce selectedGenre string to number)
-
-   .filter((podcast) =>
-    selectedGenre ? podcast.genres.includes(Number(selectedGenre)) : true
-  )
-   
-  // Then, sort podcasts by date (newest/oldest) or title (A-Z / Z-A) based on user-selected sortOrder
-  .sort((a, b) => {
-    //If the user selects "Newest First", sort by date from newest to oldest
-    if (sortOrder === 'Recently Updated') {
-      return new Date(b.updated) - new Date(a.updated);//recent first
-    } 
-    //If the user selects "Oldest First", sort by date from oldest to newest
-    else if (sortOrder === 'Oldest First') {
-      return new Date(a.updated) - new Date(b.updated); //oldest first
-    }
-    //If the user selects "A-Z", sort podcast titles in ascending alphabetical order
-    else if (sortOrder === 'A-Z') {
-      return a.title.localeCompare(b.title);
-    } 
-    //If the user selects "Z-A", sort podcast titles in descending alphabetical order
-    else if (sortOrder === 'Z-A') {
-      return b.title.localeCompare(a.title);
-    }
-    return 0; // fallback: no sort
-  });
 
   //const visiblePodcasts = useLoadMore
  // ? filteredPodcasts.slice(0, visibleCount)
