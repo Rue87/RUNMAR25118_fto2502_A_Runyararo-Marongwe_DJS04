@@ -29,6 +29,10 @@ export default function App() {
 
   // Track the selected genre for filtering 
   const [selectedGenre, setSelectedGenre] = useState('');
+  // Toggle between pagination or "Load More" mode
+const [useLoadMore, setUseLoadMore] = useState(false);
+const [visibleCount, setVisibleCount] = useState(12);
+
 
   // Extract just the genre titles from the genres array
   //const genreTitles = genres.map((g) => g.title);
@@ -45,8 +49,9 @@ console.log("Genres:", genres);
 
    // Go back to page 1 whenever the search text changes
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm]);
+      setVisibleCount(12); // Reset visible count when search or filters change
+      setCurrentPage(1);
+  }, [searchTerm, selectedGenre, sortOrder]);
 
   console.log("Selected Genre:", selectedGenre);
   console.log("All Podcast Genres:", podcasts.map(p => p.genres));
@@ -83,10 +88,21 @@ const filteredPodcasts = podcasts
     }
     return 0; // fallback: no sort
   });
+
+  //const visiblePodcasts = useLoadMore
+ // ? filteredPodcasts.slice(0, visibleCount)
+  //: filteredPodcasts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
    // Work out which podcasts to show on the current page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentPodcasts = filteredPodcasts.slice(indexOfFirstItem, indexOfLastItem);
+  //const indexOfLastItem = currentPage * itemsPerPage;
+  //const indexOfFirstItem = 0; //indexOfLastItem - itemsPerPage;
+  //const visiblePodcasts = filteredPodcasts.slice(indexOfFirstItem, visibleCount);
+  //const currentPodcasts = filteredPodcasts.slice(indexOfFirstItem, indexOfLastItem);
+const indexOfFirstItem = 0; // always start from the beginning
+const indexOfLastItem = useLoadMore
+  ? visibleCount
+  : currentPage * itemsPerPage;
+
+const visiblePodcasts = filteredPodcasts.slice(indexOfFirstItem, indexOfLastItem);
 
    /**
    * Calculates the total number of pages based on filtered results.
@@ -136,15 +152,29 @@ return (
           setSortOrder={setSortOrder} // function to change sort selection
           />
 
+          <div className="toggle-mode-container">
+  <button onClick={() => setUseLoadMore(!useLoadMore)}>
+    {useLoadMore ? "Switch to Pagination" : "Use Load More"}
+  </button>
+</div>
            {/* Show podcasts based on filter/sort/pagination */}
-            <PodcastGrid podcasts={currentPodcasts} genres={genres} />
+            <PodcastGrid podcasts={visiblePodcasts} genres={genres} />
+
+            {/* Load More button (only if using load more mode) */}
+{useLoadMore && visibleCount < filteredPodcasts.length && (
+  <div className="load-more-container">
+    <button onClick={() => setVisibleCount(visibleCount + 12)}>Load More</button>
+  </div>
+)}
 
           {/* Pagination Controls*/}
+          {!useLoadMore && (
             <div className="pagination">
               {/* Button to go to the previous page */}
               <button
                 onClick={() => handlePageChange(currentPage - 1)}//decrease page by 1
-                disabled={currentPage === 1}//disable if on last page
+                 disabled={currentPage <= 1}
+                //disabled={currentPage === 1}//disable if on last page
               >
                 Prev
               </button>
@@ -155,16 +185,19 @@ return (
                {/* When on the last page, this button is disabled so you can't go further */}
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
+                disabled={currentPage >= totalPages}
+                //disabled={currentPage === totalPages}
               >
                 Next
               </button>
-                </div>
-              </>
+            </div>
             )}
-          </main>
+          </>
+          )}
+        </main>
         </>
-      );
-    }
+    )};
+  
+
 
 

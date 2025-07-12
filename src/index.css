@@ -72,6 +72,27 @@ body {
  /* KEEP the default browser dropdown arrow */
   appearance: auto;
 }
+
+.toggle-mode-container {
+  display: flex;
+  justify-content: center; /* Center it horizontally */
+  margin: 1rem 0; /* Add vertical spacing */
+}
+
+.toggle-mode-container button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.toggle-mode-container button:hover {
+  background-color: #e0e0e0;
+}
+
 .grid {
   display: grid;
   gap: 1rem;
