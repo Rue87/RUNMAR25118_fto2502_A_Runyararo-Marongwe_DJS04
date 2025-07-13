@@ -10,9 +10,7 @@ Welcome to the Podcast Explorer! This is a dynamic and responsive web applicatio
 *   **Loading & Error States**: User-friendly indicators for data fetching status.
 *   **Centralized State Management**: Uses React Context API to manage application state efficiently.
 
-## 🚀 Live Demo
 
-A live demo of the project can be found here: [Link to Live Demo](https://your-deployment-link.com) <!-- Replace with your deployment link -->
 
 ## 📸 Screenshot
 
@@ -36,9 +34,9 @@ Make sure you have the following software installed on your machine:
 
     Open your terminal and run the following command to clone the project:
     ```bash
-    git clone https://github.com/your-username/your-repository-name.git
+    git clone https://github.com/Rue87.git
     ```
-    *(Replace `your-username/your-repository-name` with the actual repository URL)*
+   
 
 2.  **Navigate to the project directory**
     ```bash

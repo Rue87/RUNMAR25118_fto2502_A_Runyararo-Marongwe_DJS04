@@ -16,37 +16,20 @@ import { useFilteredPodcasts } from "./hooks/useFilteredPodcasts";
  * @returns {JSX.Element} The rendered application interface
  */
 export default function App() {
- // const [podcasts, setPodcasts] = useState([]);
-  //const [loading, setLoading] = useState(true);
-  //const [error, setError] = useState(null);
-// a state variable to track the user's search input.
-// 'searchTerm' holds the current text typed in the search box.
-// 'setSearchTerm' is the function used to update that text.
-// Initially, searchTerm is an empty string ('').
-  //const [searchTerm, setSearchTerm] = useState('');
-
+ 
   // Current page number (for pagination)
   const [currentPage, setCurrentPage] = useState(1);
-  
-  //const [sortOrder, setSortOrder] = useState('Newest First');
 
-  // Track the selected genre for filtering 
-  //const [selectedGenre, setSelectedGenre] = useState('');
-  // Toggle between pagination or "Load More" mode
+// Toggle between pagination or "Load More" mode
 const [useLoadMore, setUseLoadMore] = useState(false);
 const [visibleCount, setVisibleCount] = useState(12);
 
 
-  // Extract just the genre titles from the genres array
-  //const genreTitles = genres.map((g) => g.title);
   const genreOptions = genres; // Keep full genre objects with id and title
 
   // Number of podcasts to show per page
   const itemsPerPage = 12;
 
-  //useEffect(() => {
- //   fetchPodcasts(setPodcasts, setError, setLoading);
- // }, []);
   const {
     searchTerm,
     setSearchTerm,
@@ -72,18 +55,8 @@ console.log("Genres:", genres);
       setCurrentPage(1);
   }, [searchTerm, selectedGenre, sortOrder]);
 
-  //console.log("Selected Genre:", selectedGenre);
-  //console.log("All Podcast Genres:", podcasts.map(p => p.genres));
 
-
-  //const visiblePodcasts = useLoadMore
- // ? filteredPodcasts.slice(0, visibleCount)
-  //: filteredPodcasts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
    // Work out which podcasts to show on the current page
-  //const indexOfLastItem = currentPage * itemsPerPage;
-  //const indexOfFirstItem = 0; //indexOfLastItem - itemsPerPage;
-  //const visiblePodcasts = filteredPodcasts.slice(indexOfFirstItem, visibleCount);
-  //const currentPodcasts = filteredPodcasts.slice(indexOfFirstItem, indexOfLastItem);
 const indexOfFirstItem = 0; // always start from the beginning
 const indexOfLastItem = useLoadMore
   ? visibleCount
@@ -161,7 +134,7 @@ return (
               <button
                 onClick={() => handlePageChange(currentPage - 1)}//decrease page by 1
                  disabled={currentPage <= 1}
-                //disabled={currentPage === 1}//disable if on last page
+                
               >
                 Prev
               </button>
@@ -173,7 +146,7 @@ return (
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage >= totalPages}
-                //disabled={currentPage === totalPages}
+                
               >
                 Next
               </button>

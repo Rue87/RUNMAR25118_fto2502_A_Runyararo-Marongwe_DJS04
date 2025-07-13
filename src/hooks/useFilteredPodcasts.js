@@ -15,17 +15,17 @@ export function useFilteredPodcasts() {
   // useMemo ensures this heavy computation only runs when dependencies change
   const filtered = useMemo(() => {
     return podcasts
-      // Step 1: Filter by search term (case-insensitive match in podcast title)
+      // Filter by search term (case-insensitive match in podcast title)
       .filter(podcast =>
         podcast.title.toLowerCase().includes(searchTerm.toLowerCase())
       )
 
-      // Step 2: Filter by selected genre (if any is selected)
+      // Filter by selected genre (if any is selected)
       .filter(podcast =>
         selectedGenre ? podcast.genres.includes(Number(selectedGenre)) : true
       )
 
-      // Step 3: Sort based on the selected sort order
+      // Sort based on the selected sort order
       .sort((a, b) => {
         if (sortOrder === "Recently Updated") {
           return new Date(b.updated) - new Date(a.updated); // Newest first
