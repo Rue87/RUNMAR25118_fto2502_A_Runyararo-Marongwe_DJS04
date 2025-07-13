@@ -48,6 +48,19 @@ body {
 
 }
 
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* allows it to wrap on small screens */
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.toggle-mode-container {
+  margin-left: auto;
+}
+
 /* Bold label */
 .filter-label {
   font-weight: bold;
@@ -75,8 +88,9 @@ body {
 
 .toggle-mode-container {
   display: flex;
-  justify-content: center; /* Center it horizontally */
-  margin: 1rem 0; /* Add vertical spacing */
+  justify-content: center; 
+  margin: 1rem 0; 
+  margin-left: auto;
 }
 
 .toggle-mode-container button {
